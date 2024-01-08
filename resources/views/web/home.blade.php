@@ -18,7 +18,6 @@
     </div>
 </section>
 
-{{-- some changes  --}}
 
 {{-- / slider  --}}
 
