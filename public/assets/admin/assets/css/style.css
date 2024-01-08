@@ -1,0 +1,23 @@
+
+:root {
+    --primary-color: #007bff;
+    --web-color: #88015b;
+    --web-hover-color: #032940;
+    /* --web-hover-color: #b000c7; */
+    --secondary-color: #6c757d;
+    --heading-color: #333;
+    --price-color: #4e54c8;
+    --white: #ffffff;
+    --black: #000000;
+    --icon-color: #ffffff;
+    --header-top: #032940;
+    --footer-bg-color: #232629;
+    --footer-a-color: #c9c9c9;
+    --heading-font: 'Rubik', sans-serif;
+    --para-font: 'Dosis', sans-serif;
+    --style-font: 'Dancing Script', cursive;
+}
+
+.card-border-top {
+    border-top: 2px solid var(--primary-color);
+}
