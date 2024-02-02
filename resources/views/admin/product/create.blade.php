@@ -17,7 +17,7 @@
                 <div class="col-md-12">
                     <label for="input1" class="form-label">Title<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="input1" name="title"
-                        placeholder="Enter Product Title">
+                        placeholder="Enter Product Title" value="{{ old('title') }}">
                     @error('title')
                         <span class="text-danger">* {{ $message }}</span>
                     @enderror
@@ -25,19 +25,19 @@
 
                 <div class="col-md-12 my-2">
                     <label for="input1" class="form-label">Short Description</label>
-                    <textarea name="short_description" id="" cols="30" rows="4" class="form-control"></textarea>
+                    <textarea name="short_description" id="" cols="30" rows="4" class="form-control">{{ old('short_description') }}</textarea>
                 </div>
 
                 <div class="col-md-12 my-2">
                     <label for="input1" class="form-label">Long Description</label>
-                    <textarea id="long_description" name="long_description"></textarea>
+                    <textarea id="long_description" name="long_description">{{ old('long_description') }}</textarea>
                 </div>
 
                 <div class="row mt-3 g-3">
                     <div class="col-md-4">
                         <label>Regular Price (Rs.)<span class="text-danger">*</span></label>
                         <input type="text" class="form-control mb-3" name="regular_price" id="regular_price"
-                            placeholder="Rs.">
+                            placeholder="Rs." {{ old('regular_price') }}>
                         @error('regular_price')
                             <span class="text-danger">* {{ $message }}</span>
                         @enderror
@@ -62,12 +62,8 @@
                         <label>Category</label>
                         <label class="float-end px-2 text-success" data-bs-toggle="modal"
                             data-bs-target="#addCategoryModal">+ Add Category</label>
-                        <select name="category" class="form-control">
+                        <select name="category" class="form-control" id="category">
                             <option value="">Select Category</option>
-                            @foreach ($category as $item)
-                                <option value="{{ $item->title }}">{{ $item->title }}</option>
-                            @endforeach
-
                         </select>
                     </div>
 
@@ -75,12 +71,8 @@
                         <label>Brand</label>
                         <label class="float-end px-2 text-success" data-bs-toggle="modal" data-bs-target="#addBrandModal">+
                             Add Brand</label>
-                        <select name="brand" class="form-control">
+                        <select name="brand" class="form-control" id="brand">
                             <option value="">Select Brand</option>
-                            @foreach ($brand as $item)
-                                <option value="{{ $item->title }}">{{ $item->title }}</option>
-                            @endforeach
-
                         </select>
                     </div>
 
@@ -136,7 +128,7 @@
 
         </div>
     </div>
-    
+
     {{-- Models  --}}
 
     <!-- Add Category Modal -->
@@ -146,15 +138,41 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                    <h6 class="text-success mx-3" id="categoryStatusMsg"></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h3>Add Category</h3>
+                    <form id="categoryForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" placeholder="Enter category title"
+                                required>
+                            @error('title')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Upload Image (<span class="text-danger">400 X
+                                        400</span>)</label>
+                                <x-Img src="{{ asset('public/assets/images/dummy.webp') }}" id="category_image"
+                                    name="category_image_file" btnid="delete_category_image" />
+                                @error('category_image_file')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <button type="submit" class="btn btn-primary">+ Add</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" class="btn btn-primary">+ Add</button>
-                </div>
+                {{-- <div class="modal-footer"> --}}
+                {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
+                {{-- <button type="submit" class="btn btn-primary">+ Add</button> --}}
+                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -166,14 +184,36 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addBrandModalLabel">Add Brand</h5>
+                    <h6 class="text-success mx-3" id="brandStatusMsg"></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h3>Add Brand</h3>
-                </div>
-                <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
-                    <button type="button" class="btn btn-primary">+ Add</button>
+                    <form id="brandForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" placeholder="Enter Brand title"
+                                required>
+                            @error('title')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label">Upload Image (<span class="text-danger">400 X
+                                        400</span>)</label>
+                                <x-Img src="{{ asset('public/assets/images/dummy.webp') }}" id="brand_image"
+                                    name="brand_image_file" btnid="delete_brand_image" />
+                                @error('brand_image_file')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            <button type="submit" class="btn btn-primary">+ Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -192,7 +232,6 @@
                     <h3>Add Unit</h3>
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
                     <button type="button" class="btn btn-primary">+ Add</button>
                 </div>
             </div>
@@ -209,7 +248,8 @@
 
     <script>
         $(document).ready(function() {
-            Laraberg.init('long_description')
+            let api = new ApiService();
+            Laraberg.init('long_description');
 
             $("#img1").click(function() {
                 $("#file1").val(null);
@@ -222,6 +262,14 @@
             $("#img3").click(function() {
                 $("#file3").val(null);
                 $('#file3').click();
+            });
+            $("#category_image").click(function() {
+                $("#category_image_file").val(null);
+                $('#category_image_file').click();
+            });
+            $("#brand_image").click(function() {
+                $("#brand_image_file").val(null);
+                $('#brand_image_file').click();
             });
 
             $("#file1").change(function() {
@@ -239,6 +287,16 @@
                 $('#img3').attr('src', tmpath);
                 $("#delete3").show();
             });
+            $("#category_image_file").change(function() {
+                var category_tmp_path = URL.createObjectURL(this.files[0]);
+                $('#category_image').attr('src', category_tmp_path);
+                $("#delete_category_image").show();
+            });
+            $("#brand_image_file").change(function() {
+                var brand_tmp_path = URL.createObjectURL(this.files[0]);
+                $('#brand_image').attr('src', brand_tmp_path);
+                $("#delete_brand_image").show();
+            });
 
             if ($('#img1').attr('src') == "{{ url('public/assets/images/dummy.webp') }}") {
                 $("#delete1").hide();
@@ -248,6 +306,12 @@
             }
             if ($('#img3').attr('src') == "{{ url('public/assets/images/dummy.webp') }}") {
                 $("#delete3").hide();
+            }
+            if ($('#category_image').attr('src') == "{{ url('public/assets/images/dummy.webp') }}") {
+                $("#delete_category_image").hide();
+            }
+            if ($('#brand_image').attr('src') == "{{ url('public/assets/images/dummy.webp') }}") {
+                $("#delete_brand_image").hide();
             }
 
             $("#delete1").click(function() {
@@ -261,6 +325,14 @@
             $("#delete3").click(function() {
                 $("#delete3").hide();
                 $('#img3').attr('src', "{{ url('public/assets/images/dummy.webp') }}");
+            });
+            $("#delete_category_image").click(function() {
+                $("#delete_category_image").hide();
+                $('#category_image').attr('src', "{{ url('public/assets/images/dummy.webp') }}");
+            });
+            $("#delete_brand_image").click(function() {
+                $("#delete_brand_image").hide();
+                $('#brand_image').attr('src', "{{ url('public/assets/images/dummy.webp') }}");
             });
 
             // discount price
@@ -278,7 +350,7 @@
                 discountCalc(regularPrice, this.value)
 
             });
-            
+
             $('#disc').on('input', function(e) {
                 let regularPrice = $('#regular_price').val();
                 saleValueCalc(regularPrice, this.value);
@@ -293,9 +365,9 @@
 
                 }
             }
-            
+
             function saleValueCalc(regular, disc) {
-                if(regular != "0") {
+                if (regular != "0") {
                     let sale = 0;
                     sale = Math.round(regular - (disc * regular) / 100);
                     $("#discount").val(disc);
@@ -303,8 +375,78 @@
                 }
             }
 
+            // load category from api
+            function loadCategory() {
+                let req = api.getData("../categories");
+                req.then((res) => {
+                    let options = "";
+                    if (res.status == true) {
+                        options += `<option value="">Select Category</option>`;
+                        res.data.map((item) => {
+                            options += `
+                            <option value="${item.title}">${item.title}</option>
+                            `;
+                        })
+                        $("#category").html(options);
+                    }
+                })
+            }
 
-            let api = new ApiService();
+            loadCategory();
+
+            $("#categoryForm").submit(function(e) {
+                e.preventDefault();
+                let req = api.setFormData("../category/add", this);
+                req.then((res) => {
+                    if (res.status == true) {
+                        loadCategory();
+                        $("#categoryStatusMsg").html("New Category Added!");
+                        $('#categoryForm')[0].reset();
+                        $("#delete_category_image").hide();
+                        $('#category_image').attr('src',
+                            "{{ url('public/assets/images/dummy.webp') }}");
+                    } else {
+                        alert(res.message);
+                    }
+                });
+            });
+
+            // load brand from api
+            function loadBrand() {
+                let req = api.getData("../brands");
+                req.then((res) => {
+                    let options = "";
+                    if (res.status == true) {
+                        options += `<option value="">Select Brand</option>`;
+                        res.data.map((item) => {
+                            options += `
+                            <option value="${item.title}">${item.title}</option>
+                            `;
+                        })
+                        $("#brand").html(options);
+                    }
+                })
+            }
+
+            loadBrand();
+
+            $("#brandForm").submit(function(e) {
+                e.preventDefault();
+                let req = api.setFormData("../brand/add", this);
+                req.then((res) => {
+                    if (res.status == true) {
+                        loadBrand();
+                        $("#brandStatusMsg").html("New Brand Added!");
+                        $('#brandForm')[0].reset();
+                        $("#delete_brand_image").hide();
+                        $('#brand_image').attr('src',
+                            "{{ url('public/assets/images/dummy.webp') }}");
+                    } else {
+                        alert(res.message);
+                    }
+                });
+            });
+
             $('#frm').submit(function(e) {
                 e.preventDefault();
                 $("#btnSubmit").html(

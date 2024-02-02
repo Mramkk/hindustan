@@ -16,37 +16,41 @@ class AdminCategoryController extends Controller
     private $path = 'public/imgs/category/';
     public function index()
     {
-        $category = Category::all();
-        return view('admin.category.category', compact('category'));
+        // $category = Category::all();
+        // return view('admin.category.category', compact('category'));
+        return view('admin.category.category');
+    }
+
+    public function loadData()
+    {
+        $categories = Category::all();
+        return ApiRes::data('Category Data', $categories);
     }
 
     public function save(Request $req)
     {
-
-
         $req->validate([
             'title' => 'required|string|unique:categories|max:225',
-            'image' => 'required|image|mimes:jpeg,jpg,webp,png|dimensions:min_width=400,min_height=400',
+            'category_image_file' => 'required|image|mimes:jpeg,jpg,webp,png|dimensions:min_width=400,min_height=400',
         ]);
 
+        try {
+            $category = new Category();
+            $category->title = $req->title;
+            $status = $category->save();
 
-
-        $category = new Category();
-        $category->title = $req->title;
-        $status = $category->save();
-
-        if ($req->hasFile('image')) {
-            $picName = Str::slug($req->title) . "-" . uniqid() . ".webp";
-            Image::make($req->image->getRealPath())->resize('400', '400')->save($this->path . $picName);
-            $category->img = $this->path . $picName;
-            $status = $category->update();
-        }
-
-
-        if ($status) {
-            return redirect()->back()->with('success', 'Category added successfully !');
-        } else {
-            return redirect()->back()->with('error', 'Error ! Try again later');
+            if ($req->hasFile('category_image_file')) {
+                $picName = Str::slug($req->title) . "-" . uniqid() . ".webp";
+                Image::make($req->category_image_file->getRealPath())->resize('400', '400')->save($this->path . $picName);
+                $category->img = $this->path . $picName;
+                $status = $category->update();
+            }
+            // return redirect()->back()->with('success', 'Category added successfully !');
+            return ApiRes::success('Category added successfully !');
+        } catch (\Throwable $th) {
+            return ApiRes::error($th->getMessage());
+            //  return redirect()->back()->with('error', 'Something Error!' . $th->getMessage());
+            // return redirect()->back()->with('error', 'Something Error!');
         }
     }
 
@@ -86,5 +90,11 @@ class AdminCategoryController extends Controller
         } else {
             return  ApiRes::error();
         }
+    }
+
+    public function testMethod(Request $req)
+    {
+        $requestData = $req->all();
+        return ApiRes::data('Data', $requestData);
     }
 }

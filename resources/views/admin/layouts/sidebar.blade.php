@@ -1,4 +1,4 @@
-<div class="sidebar-wrapper" data-simplebar="true">
+<div class="sidebar-wrapper" data-simplebar="true" style="background: #edf8ff">
     <div class="sidebar-header">
         <div>
             <img src="{{asset('public/assets/admin/assets/images/logo-icon.png')}}" class="logo-icon" alt="logo icon">
@@ -11,7 +11,6 @@
     </div>
     <!--navigation-->
     <ul class="metismenu" id="menu">
-
         <li>
             <a href="javascript:;" class="has-arrow text-primary">
                 <div class="parent-icon"><i class='bx bx-home-alt'></i>
@@ -25,7 +24,6 @@
                 </li>
                 <li> <a href="#"><i class='bx bx-radio-circle'></i>Popup Alert</a>
                 </li>
-
             </ul>
         </li>
 

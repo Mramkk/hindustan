@@ -15,31 +15,38 @@ class AdminBrandController extends Controller
     private $path = 'public/imgs/brand/';
     public function index()
     {
-        $brand = Brand::all();
-        return view('admin.brand.brand', compact('brand'));
+        // $brand = Brand::all();
+        return view('admin.brand.brand');
+    }
+
+    public function loadData()
+    {
+        $brands = Brand::all();
+        return ApiRes::data('Brand Data', $brands);
     }
 
     public function save(Request $req)
     {
         $req->validate([
             'title' => 'required|string|unique:brands|max:225',
-            'image' => 'required|image|mimes:jpeg,jpg,webp,png|dimensions:min_width=400,min_height=400',
+            'brand_image_file' => 'required|image|mimes:jpeg,jpg,webp,png|dimensions:min_width=400,min_height=400',
         ]);
         try {
             $brand = new Brand();
             $brand->title = $req->title;
             $brand->save();
-            if ($req->hasFile('image')) {
+            if ($req->hasFile('brand_image_file')) {
                 $picName = Str::slug($req->title) . "-" . uniqid() . ".webp";
-                Image::make($req->image->getRealPath())->resize('400', '400')->save($this->path . $picName);
+                Image::make($req->brand_image_file->getRealPath())->resize('400', '400')->save($this->path . $picName);
                 $brand->img = $this->path . $picName;
                 $brand->update();
             }
-            return redirect()->back()->with('success', 'Brand Added Successfully!');
+            // return redirect()->back()->with('success', 'Brand Added Successfully!');
+            return ApiRes::success('Brand added successfully !');
         } catch (\Throwable $th) {
-
+            return ApiRes::error($th->getMessage());
             //  return redirect()->back()->with('error', 'Something Error!' . $th->getMessage());
-            return redirect()->back()->with('error', 'Something Error!');
+            // return redirect()->back()->with('error', 'Something Error!');
         }
     }
 

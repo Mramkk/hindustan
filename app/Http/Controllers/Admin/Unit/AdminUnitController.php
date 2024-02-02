@@ -11,27 +11,32 @@ class AdminUnitController extends Controller
 {
     public function index()
     {
-        $unit = Unit::all();
-        return view('admin.unit.unit', compact('unit'));
+        // $unit = Unit::all();
+        return view('admin.unit.unit');
+    }
+
+    public function loadData()
+    {
+        $units = Unit::all();
+        return ApiRes::data('Unit Data', $units);
     }
 
     public function save(Request $req)
     {
-        $unit = new Unit();
-        $unit->title = $req->unit;
-        $status = $unit->save();
-
-        if ($status) {
-            return redirect()->back()->with('success', 'New Unit Added Successfully!');
-        } else {
-            return redirect()->back()->with('error', 'Something Error!');
+        try {
+            $unit = new Unit();
+            $unit->title = $req->unit;
+            $status = $unit->save();
+            return ApiRes::success('Unit added successfully !');
+        } catch (\Throwable $th) {
+            return ApiRes::error($th->getMessage());
         }
     }
 
     public function status(Request $req)
     {
         $unit = Unit::Where('id', $req->id)->first();
-        if($unit->status == '1') {
+        if ($unit->status == '1') {
             $unit->status = '0';
             $status = $unit->update();
             if ($status) {
@@ -39,7 +44,7 @@ class AdminUnitController extends Controller
             } else {
                 return  ApiRes::error();
             }
-        }else{
+        } else {
             $unit->status = '1';
             $status = $unit->update();
             if ($status) {
@@ -50,7 +55,8 @@ class AdminUnitController extends Controller
         }
     }
 
-    public function deleteUnit(Request $req) {
+    public function deleteUnit(Request $req)
+    {
         $status = Unit::Where('id', $req->id)->delete();
         if ($status) {
             return  ApiRes::success('Unit Deleted Successfully!');

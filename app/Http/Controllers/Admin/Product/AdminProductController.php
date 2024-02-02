@@ -17,10 +17,10 @@ class AdminProductController extends Controller
 {
     public function index()
     {
-        $category = Category::all();
+        // $category = Category::all();
         $brand = Brand::all();
         $unit = Unit::all();
-        return view('admin.product.create', compact('category', 'brand', 'unit'));
+        return view('admin.product.create', compact('brand', 'unit'));
     }
 
     public function product()

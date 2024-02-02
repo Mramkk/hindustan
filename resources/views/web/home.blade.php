@@ -18,7 +18,6 @@
     </div>
 </section>
 
-
 {{-- / slider  --}}
 
 <section class="my-4">

@@ -21,16 +21,12 @@
         background-color: red;
         color: white;
         font-size: 10px;
-        /* padding: 12px 24px; */
-        /* border: none; */
         border-radius: 50%;
         cursor: pointer;
-        /* border-radius: 5px; */
         text-align: center;
     }
 
     .imgc .btn:hover {
-
         background-color: red;
         color: #fff;
         font-size: 16px;
@@ -39,8 +35,6 @@
     .btn i {
         margin-left: -4px;
     }
-
-
 
     .imgc:hover {
         cursor: pointer;
