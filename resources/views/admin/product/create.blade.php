@@ -17,7 +17,7 @@
                 <div class="col-md-12">
                     <label for="input1" class="form-label">Title<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="input1" name="title"
-                        placeholder="Enter Product Title" value="{{ old('title') }}">
+                        placeholder="Enter Product Title" value="{{ old('title') }}" required>
                     @error('title')
                         <span class="text-danger">* {{ $message }}</span>
                     @enderror
@@ -37,7 +37,7 @@
                     <div class="col-md-4">
                         <label>Regular Price (Rs.)<span class="text-danger">*</span></label>
                         <input type="text" class="form-control mb-3" name="regular_price" id="regular_price"
-                            placeholder="Rs." {{ old('regular_price') }}>
+                            placeholder="Rs." {{ old('regular_price') }} required>
                         @error('regular_price')
                             <span class="text-danger">* {{ $message }}</span>
                         @enderror
@@ -46,7 +46,7 @@
                     <div class="col-md-4">
                         <label>Selling Price (Rs.)<span class="text-danger">*</span></label>
                         <input type="text" class="form-control mb-3" name="selling_price" id="selling_price"
-                            placeholder="Rs.">
+                            placeholder="Rs." {{ old('selling_price') }} required>
                         @error('selling_price')
                             <span class="text-danger">* {{ $message }}</span>
                         @enderror
@@ -80,11 +80,8 @@
                         <label>Unit<span class="text-danger">*</span></label>
                         <label class="float-end px-2 text-success" data-bs-toggle="modal" data-bs-target="#addUnitModal">+
                             Add Unit</label>
-                        <select name="unit" class="form-control">
+                        <select name="unit" class="form-control" id="unit" required>
                             <option value="">Select Unit</option>
-                            @foreach ($unit as $item)
-                                <option value="{{ $item->title }}">{{ $item->title }}</option>
-                            @endforeach
                         </select>
                         @error('unit')
                             <span class="text-danger">* {{ $message }}</span>
@@ -226,13 +223,21 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addUnitModalLabel">Add Unit</h5>
+                    <h6 class="text-success mx-3" id="unitStatusMsg"></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h3>Add Unit</h3>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">+ Add</button>
+                    <form id="unitForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="inputUnitTitle" class="form-label">Unit Name</label>
+                            <input type="text" class="form-control" id="inputUnitTitle" name="unit"
+                                placeholder="Enter unit name">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">+ Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -446,6 +451,42 @@
                     }
                 });
             });
+
+            // load unit from api
+            function loadUnit() {
+                let req = api.getData("../units");
+                req.then((res) => {
+                    let options = "";
+                    if (res.status == true) {
+                        options += `<option value="">Select Unit</option>`;
+                        res.data.map((item) => {
+                            options += `
+                            <option value="${item.title}">${item.title}</option>
+                            `;
+                        })
+                        $("#unit").html(options);
+                    }
+                })
+            }
+
+            loadUnit();
+
+            $("#unitForm").submit(function(e) {
+            e.preventDefault();
+            let req = api.setFormData("../unit/add", this);
+            req.then((res) => {
+                if (res.status == true) {
+                    loadUnit();
+                    $("#unitStatusMsg").html("New Unit Added!");
+                    $('#unitForm')[0].reset();
+                }else{
+                    alert(res.message);
+                }
+            });
+        });
+
+
+        // submit form 
 
             $('#frm').submit(function(e) {
                 e.preventDefault();
