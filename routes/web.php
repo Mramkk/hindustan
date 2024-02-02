@@ -15,7 +15,6 @@ Route::controller(WebController::class)->group(function () {
 });
 
 
-
 // --------------- User Register & Login Routes -------------------- //
 
 Route::controller(AuthController::class)->group(function () {
