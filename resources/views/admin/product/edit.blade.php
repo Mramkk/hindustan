@@ -109,7 +109,7 @@
                 </div>
 
                 <div class="row mt-3">
-                    <label>Upload Product Images<span class="text-danger">*</span></label>
+                    <label>Upload Product Images (JPEG, JPG, PNG)<span class="text-danger">*</span></label>
                     <div class="col-md-3">
                         <x-Img src="{{ url('/' . $product->imgmd[0]->image) }}" id="img1" name="file1"
                             btnid="delete1" />
