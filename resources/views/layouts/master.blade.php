@@ -306,7 +306,7 @@
     @yield('main-content')
 
 
-    <section class="py-4 mt-5" style="background-color: #445268; color: #fff;">
+    {{-- <section class="py-4 mt-5" style="background-color: #445268; color: #fff;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-12">
@@ -351,7 +351,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- footer  --}}
 
