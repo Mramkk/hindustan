@@ -166,10 +166,6 @@
                         </div>
                     </form>
                 </div>
-                {{-- <div class="modal-footer"> --}}
-                {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
-                {{-- <button type="submit" class="btn btn-primary">+ Add</button> --}}
-                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -500,7 +496,7 @@
                     if (res.status == true) {
                         alert(res.message);
                         // location.reload();
-                        location.href = 'http://localhost/businessapp/admin/product/table'
+                        location.href =  api.url() + '/admin/product/table'
                     } else {
                         alert(res.message);
                         location.reload();

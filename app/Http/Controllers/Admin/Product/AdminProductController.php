@@ -37,8 +37,8 @@ class AdminProductController extends Controller
             'selling_price' => 'required|numeric|not_in:0',
             'unit' => 'required',
             'file1' => 'required|image|mimes:jpeg,jpg,png',
-            'file2' => 'required|image|mimes:jpeg,jpg,png',
-            'file3' => 'required|image|mimes:jpeg,jpg,png'
+            // 'file2' => 'required|image|mimes:jpeg,jpg,png',
+            // 'file3' => 'required|image|mimes:jpeg,jpg,png'
         ]);
 
         $pid =   uniqid();

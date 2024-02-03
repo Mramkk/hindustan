@@ -251,7 +251,7 @@
                     if (res.status == true) {
                         alert(res.message);
                         // location.reload();
-                        location.href = 'https://jissoftware.in/hindustanapp/admin/product/table'
+                        location.href =  api.url() + '/admin/product/table'
                     } else {
                         alert(res.message);
                         location.reload();
