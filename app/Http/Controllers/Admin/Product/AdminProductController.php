@@ -125,7 +125,8 @@ class AdminProductController extends Controller
                 $status =  $img->save();
             }
             if ($status) {
-                return ApiRes::success("Product Added Successfullly !");
+                return back()->with('success', 'Product Added Successfullly !');
+                // return ApiRes::success("Product Added Successfullly !");
             } else {
                 return ApiRes::error();
             }

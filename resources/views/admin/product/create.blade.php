@@ -12,10 +12,16 @@
 
     <div class="card card-border-top">
         <div class="card-body p-4">
-            <form id="frm">
+            <form id="frm" method="POST" action="{{ route('product.save') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="col-md-12">
                     <label for="input1" class="form-label">Title<span class="text-danger">*</span></label>
+                    @if (Session::has('success'))
+                        <label class="float-end fs-4 fw-bold text-success">{{ Session::get('success')}}</label>
+                        @php
+                            Session::forget('session');
+                        @endphp
+                    @endif
                     <input type="text" class="form-control" id="input1" name="title"
                         placeholder="Enter Product Title" value="{{ old('title') }}" required>
                     @error('title')
@@ -116,6 +122,18 @@
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        @if($errors->any())
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="text-danger">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        @endif
+                    </div>
+                </div>
+                
                 <div class="row mt-2">
                     <div class="col-md-3">
                         <button class="btn btn-primary mt-3" id="btnSubmit" type="submit">Save</button>
@@ -349,7 +367,6 @@
             $('#selling_price').on('input', function(e) {
                 let regularPrice = $('#regular_price').val();
                 discountCalc(regularPrice, this.value)
-
             });
 
             $('#disc').on('input', function(e) {
@@ -363,7 +380,6 @@
                     cal = Math.round(((regular - sell) / (regular)) * 100);
                     $("#disc").val(cal);
                     $("#discount").val(cal);
-
                 }
             }
 
@@ -484,25 +500,25 @@
 
         // submit form 
 
-            $('#frm').submit(function(e) {
-                e.preventDefault();
-                $("#btnSubmit").html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submit`
-                );
+            // $('#frm').submit(function(e) {
+            //     e.preventDefault();
+            //     $("#btnSubmit").html(
+            //         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submit`
+            //     );
 
-                let req = api.setFormData(api.url() + "/admin/product/save", this);
-                $("#btnSubmit").attr("disabled", true);
-                req.then((res) => {
-                    if (res.status == true) {
-                        alert(res.message);
-                        // location.reload();
-                        location.href =  api.url() + '/admin/product/table'
-                    } else {
-                        alert(res.message);
-                        location.reload();
-                    }
-                });
-            });
+            //     let req = api.setFormData(api.url() + "/admin/product/save", this);
+            //     $("#btnSubmit").attr("disabled", true);
+            //     req.then((res) => {
+            //         if (res.status == true) {
+            //             alert(res.message);
+            //             // location.reload();
+            //             location.href =  api.url() + '/admin/product/table'
+            //         } else {
+            //             alert(res.message);
+            //             location.reload();
+            //         }
+            //     });
+            // });
         });
     </script>
 
