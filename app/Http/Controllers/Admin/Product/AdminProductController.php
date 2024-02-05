@@ -150,7 +150,6 @@ class AdminProductController extends Controller
 
     public function update(Request $req)
     {
-        dd($req->all());
         $product = Product::Where('id', $req->id)->first();
 
         $req->validate([
