@@ -35,6 +35,7 @@ class AdminProductController extends Controller
             'title' => 'required|string|max:225',
             'regular_price' => 'required|numeric|not_in:0',
             'selling_price' => 'required|numeric|not_in:0',
+            'quantity' => 'required|numeric',
             'unit' => 'required',
             'file1' => 'required|image|mimes:jpeg,jpg,png',
             // 'file2' => 'required|image|mimes:jpeg,jpg,png',
@@ -54,6 +55,7 @@ class AdminProductController extends Controller
         $product->discount = $req->discount;
         $product->category = $req->category;
         $product->brand = $req->brand;
+        $product->current_stock = $req->quantity;
         $product->unit = $req->unit;
         $product->status = $req->status;
         $status = $product->save();
@@ -141,12 +143,14 @@ class AdminProductController extends Controller
         $category = Category::all();
         $brand = Brand::all();
         $unit = Unit::all();
+        // return $product->imgmd->count();
         return view('admin.product.edit', compact('product', 'category', 'brand', 'unit'));
     }
 
 
     public function update(Request $req)
     {
+        dd($req->all());
         $product = Product::Where('id', $req->id)->first();
 
         $req->validate([
@@ -165,6 +169,7 @@ class AdminProductController extends Controller
         $product->discount = $req->discount;
         $product->category = $req->category;
         $product->brand = $req->brand;
+        $product->current_stock = $req->quantity;
         $product->unit = $req->unit;
         $product->status = $req->status;
         $status = $product->update();
@@ -233,7 +238,8 @@ class AdminProductController extends Controller
                 $status =  $img->update();
             }
             if ($status) {
-                return ApiRes::success("Product Updated Successfullly !");
+                return back()->with('success', 'Product Updated Successfullly !');
+                // return ApiRes::success("Product Updated Successfullly !");
             } else {
                 return ApiRes::error();
             }

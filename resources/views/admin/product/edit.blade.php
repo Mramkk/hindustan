@@ -12,11 +12,17 @@
 
     <div class="card card-border-top">
         <div class="card-body p-4">
-            <form id="frm">
+            <form id="frm" method="POST" action="{{ route('product.update') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="text" value="{{ $product->id }}" name="id" hidden>
                 <div class="col-md-12">
                     <label for="input1" class="form-label">Title<span class="text-danger">*</span></label>
+                    @if (Session::has('success'))
+                        <label class="float-end fs-4 fw-bold text-success">{{ Session::get('success')}}</label>
+                        @php
+                            Session::forget('success');
+                        @endphp
+                    @endif
                     <input type="text" class="form-control" id="input1" name="title"
                         placeholder="Enter Product Title" value="{{ $product->title }}">
                     @error('title')
@@ -85,6 +91,11 @@
                     </div>
 
                     <div class="col-md-4">
+                        <label>Quantity<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="quantity" id="quantity" value="{{ $product->current_stock }}" required>
+                    </div>
+
+                    <div class="col-md-4">
                         <label>Unit<span class="text-danger">*</span></label>
                         <select name="unit" class="form-control">
                             <option value="">Select Unit</option>
@@ -105,7 +116,6 @@
                             <option value="0" {{ $product->status == '0' ? 'selected' : '' }}>Deactive</option>
                         </select>
                     </div>
-
                 </div>
 
                 <div class="row mt-3">
@@ -116,13 +126,23 @@
                     </div>
 
                     <div class="col-md-3">
+                        @if ($product->imgmd->count() > 1)
                         <x-Img src="{{ url('/' . $product->imgmd[1]->image) }}" id="img2" name="file2"
                             btnid="delete2" />
+                        @else
+                        <x-Img src="{{ asset('public/assets/images/dummy.webp') }}" id="img2" name="file2"
+                        btnid="delete2" />
+                        @endif
                     </div>
 
                     <div class="col-md-3">
+                        @if ($product->imgmd->count() > 2)
                         <x-Img src="{{ url('/' . $product->imgmd[2]->image) }}" id="img3" name="file3"
                             btnid="delete3" />
+                        @else
+                        <x-Img src="{{ asset('public/assets/images/dummy.webp') }}" id="img3" name="file3"
+                        btnid="delete3" />
+                        @endif
                     </div>
 
                 </div>
@@ -238,26 +258,26 @@
             }
 
 
-            let api = new ApiService();
-            $('#frm').submit(function(e) {
-                e.preventDefault();
-                $("#btnSubmit").html(
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Update`
-                );
+            // let api = new ApiService();
+            // $('#frm').submit(function(e) {
+            //     e.preventDefault();
+            //     $("#btnSubmit").html(
+            //         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Update`
+            //     );
 
-                let req = api.setFormData(api.url() + "/admin/product/edit", this);
-                $("#btnSubmit").attr("disabled", true);
-                req.then((res) => {
-                    if (res.status == true) {
-                        alert(res.message);
-                        // location.reload();
-                        location.href =  api.url() + '/admin/product/table'
-                    } else {
-                        alert(res.message);
-                        location.reload();
-                    }
-                });
-            });
+            //     let req = api.setFormData(api.url() + "/admin/product/edit", this);
+            //     $("#btnSubmit").attr("disabled", true);
+            //     req.then((res) => {
+            //         if (res.status == true) {
+            //             alert(res.message);
+            //             // location.reload();
+            //             location.href =  api.url() + '/admin/product/table'
+            //         } else {
+            //             alert(res.message);
+            //             location.reload();
+            //         }
+            //     });
+            // });
         });
     </script>
 

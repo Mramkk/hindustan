@@ -19,7 +19,7 @@
                     @if (Session::has('success'))
                         <label class="float-end fs-4 fw-bold text-success">{{ Session::get('success')}}</label>
                         @php
-                            Session::forget('session');
+                            Session::forget('success');
                         @endphp
                     @endif
                     <input type="text" class="form-control" id="input1" name="title"
@@ -80,6 +80,11 @@
                         <select name="brand" class="form-control" id="brand">
                             <option value="">Select Brand</option>
                         </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>Quantity<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="quantity" id="quantity" required>
                     </div>
 
                     <div class="col-md-4">
