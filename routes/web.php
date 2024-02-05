@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(WebController::class)->group(function () {
     Route::get('/', 'home')->name('home');
-    Route::get('/product/view', 'productView')->name('product.view');
+    Route::get('/product/view/{id}', 'productView')->name('product.view');
     Route::view('/shop', 'web.shop');
 });
 

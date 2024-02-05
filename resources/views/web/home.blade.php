@@ -39,7 +39,7 @@
                     <div class="card">
                         <div class="product-card p-2">
                             <div class="img-box">
-                                <a href="{{ route('product.view') }}">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}">
                                     <img src="{{ url('/') . '/' . $product->img->image }}" alt="product" class="img-fluid product-item-img">
                                 </a>
                             </div>
@@ -61,7 +61,7 @@
                                         <i class="bi bi-star text-secondary"></i>
                                     </div>
                                 </div>
-                                <a href="{{ route('product.view') }}" class="product-title">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}" class="product-title">
                                     <p>{{Str::limit($product->title, 28)}}</p>
                                 </a>
                                 <div class="clearfix">
@@ -107,7 +107,7 @@
                     <div class="card">
                         <div class="product-card p-2">
                             <div class="img-box">
-                                <a href="{{ route('product.view') }}">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}">
                                     <img src="{{ url('/') . '/' . $product->img->image }}" alt="product" class="img-fluid product-item-img">
                                 </a>
                             </div>
@@ -129,7 +129,7 @@
                                         <i class="bi bi-star text-secondary"></i>
                                     </div>
                                 </div>
-                                <a href="{{ route('product.view') }}" class="product-title">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}" class="product-title">
                                     <p>{{Str::limit($product->title, 28)}}</p>
                                 </a>
                                 <div class="clearfix">
@@ -249,7 +249,7 @@
                     <div class="card">
                         <div class="product-card p-2">
                             <div class="img-box">
-                                <a href="{{ route('product.view') }}">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}">
                                     <img src="{{ url('/') . '/' . $product->img->image }}" alt="product" class="img-fluid product-item-img">
                                 </a>
                             </div>
@@ -271,7 +271,7 @@
                                         <i class="bi bi-star text-secondary"></i>
                                     </div>
                                 </div>
-                                <a href="{{ route('product.view') }}" class="product-title">
+                                <a href="{{ url('/product/view/') . '/' . $product->id }}" class="product-title">
                                     <p>{{Str::limit($product->title, 28)}}</p>
                                 </a>
                                 <div class="clearfix">

@@ -14,7 +14,9 @@ class WebController extends Controller
         return view('web.home', compact('products'));
     }
 
-    public function productView() {
-        return view('web.product-details');
+    public function productView(Request $req) {
+        $product = Product::Where('id', $req->id)->with('imgmd')->first();
+        $related_products = Product::WhereNotIn('id', [$req->id])->Where('status', '1')->with('img')->take(3)->get();
+        return view('web.product-details', compact('product', 'related_products'));
     }
 }
